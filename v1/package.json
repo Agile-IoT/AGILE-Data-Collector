@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "browserify ./src/app.js -o ./dist/bundle.js && mv ./src/index.html ./dist/index.html"
+    "build": "browserify ./src/app.js -o ./dist/bundle.js && cp ./src/index.html ./dist/index.html"
   },
   "keywords": [],
   "author": "",
