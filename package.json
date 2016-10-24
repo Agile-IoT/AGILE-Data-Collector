@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "scripts": {
-    "build": "cp ./src/* ./dist/ && browserify ./src/app.js -o ./dist/bundle.js"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "solid-client": "^0.22.4"
+    "commander": "^2.9.0"
   }
 }
