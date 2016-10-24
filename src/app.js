@@ -1,11 +1,10 @@
-var solid = require('solid-client')
-
 global.collector = {
   data: null,
 
   // Replace with API call.
   collect: function() {
-    fetch('https://d.databox.me/profile/card', {
+    const url = document.getElementById('endpointuri').value
+    fetch(url, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -13,17 +12,30 @@ global.collector = {
         Accept: 'text/turtle;q=0.8,*/*;q=0.5'
       }
     }).then(function (res) {
-      console.log(res)
       return res.text()
     }).then(function (ans) {
       data = ans
     })
   },
+  
+  readData: function() {
+    const url = document.getElementById('solidUri').value
+    fetch(url, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Accept: 'text/turtle;q=0.8,*/*;q=0.5'
+      }
+    }).then((response) => {
+      return response.text()
+    }).then((text) => {
+      alert(text)
+    })
+  },
     
   upload: function() {
-    console.log(this.data)
-    console.log(data)
-    fetch('https://pre.webid.jolocom.de/profile/file', {
+    const url = document.getElementById('solidUri').value
+    fetch(url, {
       method: 'PUT',
       credentials: 'include',
       body: data,
