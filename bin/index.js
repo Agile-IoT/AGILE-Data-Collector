@@ -13,7 +13,7 @@ program
   .option('-t --target <uri>', 'Url of the Solid server where the data will be stored.')
   .option('-s --source <uri>', 'The endpoint from where the data will be taken.')
   .option('-i --interval <sec>', 'The frequency of data pull / uploads.')
-  .option('-d --delegate', 'Use webid delegation.')
+  .option('-d --delegate <webId>', 'Use webid delegation, supply the webId of the account you are delegating for.')
   .parse(process.argv);
 
 if (!(program.cert && program.key && program.source && program.target)) {
@@ -39,6 +39,13 @@ const options = {
   key: keyFile
 }
 
+if (program.delegate) {
+  options.headers = {
+    'On-Behalf-Of': program.delegate
+  }
+}
+
+// This is the main loop. Fetches data and then uploads it, calls itself in the end.
 
 const fetchData = () => {
   console.log(`Fetching new data from ${options.url}.`)
@@ -48,12 +55,10 @@ const fetchData = () => {
       return
     }
 
-    const putOptions = {
+    const putOptions = Object.assign({}, options, {
       url: program.target,
-      cert: certFile,
-      key: keyFile,
       body: res.body
-    } 
+    })
 
     request.put(putOptions, (err,res) => {
       if (err) {
