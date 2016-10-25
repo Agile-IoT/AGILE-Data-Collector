@@ -22,9 +22,11 @@ if (!(program.cert && program.key && program.source && program.target)) {
   return
 }
 
+let certFile, keyFile
+
 try {
-  const certFile = fs.readFileSync(program.cert, 'utf8')
-  const keyFile = fs.readFileSync(program.key, 'utf8')
+  certFile = fs.readFileSync(program.cert, 'utf8')
+  keyFile = fs.readFileSync(program.key, 'utf8')
 } catch (e) {
   console.log('Error occured while reading certificate / key files.')
   return
@@ -61,11 +63,17 @@ const fetchData = () => {
     })
 
     request.put(putOptions, (err,res) => {
+      console.log(putOptions.headers)
       if (err) {
         console.log(`Error occured while uploading the data. ${err}`)
         return
       }
+
       console.log(`New data uploaded to ${putOptions.url}.`)
+      if (program.delegate) {
+        console.log('On behalf of ', program.delegate)
+      }
+
       setTimeout(fetchData, 10000)
     })
   })
